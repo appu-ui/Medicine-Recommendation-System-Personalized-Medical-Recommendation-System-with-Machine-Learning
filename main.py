@@ -138,25 +138,17 @@ def mental_health_result():
 
 @app.route('/news')
 def news():
-    try:
-        from newsapi.newsapi_client import NewsApiClient
-        newsapi = NewsApiClient(api_key='4b3c2c30aa1948eba5b013824c857d25')
-        yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
-        
-        articles = newsapi.get_everything(
-            q='medical OR healthcare OR medicine',
-            language='en',
-            from_param=yesterday,
-            sort_by='relevancy'
-        )
-        
-        if articles and 'articles' in articles:
-            return render_template('news.html', articles=articles['articles'][:10])
-        else:
-            return render_template('news.html', articles=[])
-    except Exception as e:
-        print(f"NewsAPI Error: {str(e)}")
-        return render_template('news.html', articles=[])
+    newsapi = NewsApiClient(api_key='4b3c2c30aa1948eba5b013824c857d25')
+    yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
+    
+    articles = newsapi.get_everything(
+        q='medical OR healthcare OR medicine',
+        language='en',
+        from_param=yesterday,
+        sort_by='relevancy'
+    )
+    
+    return render_template('news.html', articles=articles['articles'][:10])
 
 if __name__ == '__main__':
 
