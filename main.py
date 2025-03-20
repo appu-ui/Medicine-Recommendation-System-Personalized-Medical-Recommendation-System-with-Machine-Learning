@@ -135,6 +135,40 @@ def mental_health_result():
     }
     return render_template('mental_health_result.html', assessment=assessment)
 
+@app.route('/news')
+def news():
+    try:
+        import requests
+        from bs4 import BeautifulSoup
+        
+        url = "https://www.medicalnewstoday.com/news"
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        
+        articles = []
+        for article in soup.find_all('article', class_='article', limit=10):
+            try:
+                title = article.find('a', class_='css-1qw5f1g').text
+                link = article.find('a', class_='css-1qw5f1g')['href']
+                image = article.find('img')['src'] if article.find('img') else ''
+                summary = article.find('p', class_='css-1tpw14g').text if article.find('p', class_='css-1tpw14g') else ''
+                
+                articles.append({
+                    'title': title,
+                    'url': f"https://www.medicalnewstoday.com{link}",
+                    'urlToImage': image,
+                    'description': summary,
+                    'publishedAt': ''
+                })
+            except Exception as e:
+                print(f"Error parsing article: {e}")
+                continue
+                
+        return render_template('news.html', articles=articles)
+    except Exception as e:
+        print(f"Error fetching news: {e}")
+        return render_template('news.html', articles=[])
+
 if __name__ == '__main__':
 
     app.run(host='0.0.0.0', port=3000, debug=True)
