@@ -177,6 +177,36 @@ def news():
         print(f"Error fetching news: {e}")
         return render_template('news.html', articles=[])
 
+@app.route('/nearby', methods=['GET', 'POST'])
+def nearby():
+    hospitals = []
+    if request.method == 'POST':
+        try:
+            import googlemaps
+            gmaps = googlemaps.Client(key='YOUR_GOOGLE_MAPS_API_KEY')
+            
+            location = request.form.get('location', '')
+            if location:
+                # Geocode the location
+                geocode_result = gmaps.geocode(location)
+                if geocode_result:
+                    lat = geocode_result[0]['geometry']['location']['lat']
+                    lng = geocode_result[0]['geometry']['location']['lng']
+                    
+                    # Search for nearby hospitals
+                    places_result = gmaps.places_nearby(
+                        location=(lat, lng),
+                        radius=5000,  # 5km radius
+                        type='hospital'
+                    )
+                    
+                    hospitals = places_result.get('results', [])
+                    
+        except Exception as e:
+            print(f"Error finding nearby hospitals: {e}")
+            
+    return render_template('nearby.html', hospitals=hospitals)
+
 if __name__ == '__main__':
 
     app.run(host='0.0.0.0', port=3000, debug=True)

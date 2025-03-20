@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nearby Hospitals</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .hospitals-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+        .hospital-card {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            margin-bottom: 1.5rem;
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="hospitals-container">
+        <h1 class="text-center mb-4">Find Nearby Hospitals</h1>
+        <form method="POST" class="mb-4">
+            <div class="input-group">
+                <input type="text" name="location" class="form-control" placeholder="Enter your location" required>
+                <button type="submit" class="btn btn-primary">Search</button>
+            </div>
+        </form>
+        
+        {% if hospitals %}
+            {% for hospital in hospitals %}
+            <div class="hospital-card">
+                <h3>{{ hospital.name }}</h3>
+                <p>Rating: {{ hospital.rating if hospital.rating else 'N/A' }} ⭐</p>
+                <p>Address: {{ hospital.vicinity }}</p>
+                {% if hospital.opening_hours and hospital.opening_hours.open_now %}
+                    <p class="text-success">Open Now</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>
