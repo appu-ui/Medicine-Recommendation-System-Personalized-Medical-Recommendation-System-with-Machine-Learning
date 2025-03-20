@@ -355,8 +355,9 @@
     const enteredSymptoms = new Set();
     
     symptomsInput.addEventListener('input', function(e) {
-        if (e.inputType === 'insertText' && e.data === ',') {
-            const symptom = this.value.slice(0, -1).trim();
+        const currentValue = this.value;
+        if (currentValue.endsWith(',')) {
+            const symptom = currentValue.slice(0, -1).trim();
             if (symptom) {
                 enteredSymptoms.add(symptom);
                 updateInputValue();
@@ -368,12 +369,15 @@
         const symptom = this.value.trim();
         if (symptom) {
             enteredSymptoms.add(symptom);
+            this.value = '';
             updateInputValue();
         }
     });
 
     function updateInputValue() {
-        symptomsInput.value = Array.from(enteredSymptoms).join(', ');
+        const currentInput = symptomsInput.value.endsWith(',') ? symptomsInput.value : '';
+        const symptoms = Array.from(enteredSymptoms).join(', ');
+        symptomsInput.value = symptoms + (currentInput ? ', ' : '');
     }
 </script>
 
