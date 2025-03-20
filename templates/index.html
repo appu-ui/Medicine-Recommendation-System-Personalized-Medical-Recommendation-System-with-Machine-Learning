@@ -181,7 +181,33 @@
             <div class="form-group">
                 <label class="mb-2 fs-5" for="symptoms">Enter Your Symptoms:</label>
                 <input type="text" class="form-control" id="symptoms" name="symptoms" 
-                       placeholder="e.g., itching, fever, headache...">
+                   placeholder="e.g., itching, fever, headache..." list="symptomsList" autocomplete="off">
+            <datalist id="symptomsList">
+                <option value="itching">
+                <option value="skin_rash">
+                <option value="nodal_skin_eruptions">
+                <option value="continuous_sneezing">
+                <option value="shivering">
+                <option value="chills">
+                <option value="joint_pain">
+                <option value="stomach_pain">
+                <option value="acidity">
+                <option value="vomiting">
+                <option value="fatigue">
+                <option value="anxiety">
+                <option value="weight_loss">
+                <option value="restlessness">
+                <option value="lethargy">
+                <option value="cough">
+                <option value="high_fever">
+                <option value="headache">
+                <option value="yellowish_skin">
+                <option value="nausea">
+                <option value="loss_of_appetite">
+                <option value="back_pain">
+                <option value="dizziness">
+                <option value="diarrhoea">
+            </datalist>
             </div>
             
             <button type="button" id="startSpeechRecognition" class="btn btn-speech mt-3">
@@ -323,6 +349,34 @@
 
     <!-- Diets Modal -->
     <div class="modal fade" id="dietsModal" tabindex="-1">
+
+<script>
+    const symptomsInput = document.getElementById('symptoms');
+    const enteredSymptoms = new Set();
+    
+    symptomsInput.addEventListener('input', function(e) {
+        if (e.inputType === 'insertText' && e.data === ',') {
+            const symptom = this.value.slice(0, -1).trim();
+            if (symptom) {
+                enteredSymptoms.add(symptom);
+                updateInputValue();
+            }
+        }
+    });
+
+    symptomsInput.addEventListener('change', function() {
+        const symptom = this.value.trim();
+        if (symptom) {
+            enteredSymptoms.add(symptom);
+            updateInputValue();
+        }
+    });
+
+    function updateInputValue() {
+        symptomsInput.value = Array.from(enteredSymptoms).join(', ');
+    }
+</script>
+
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
