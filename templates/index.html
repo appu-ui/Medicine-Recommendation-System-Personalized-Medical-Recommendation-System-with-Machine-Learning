@@ -352,33 +352,23 @@
 
 <script>
     const symptomsInput = document.getElementById('symptoms');
-    const enteredSymptoms = new Set();
     
     symptomsInput.addEventListener('input', function(e) {
-        const currentValue = this.value;
-        if (currentValue.endsWith(',')) {
-            const symptom = currentValue.slice(0, -1).trim();
-            if (symptom) {
-                enteredSymptoms.add(symptom);
-                updateInputValue();
+        const value = this.value;
+        if (value.endsWith(',')) {
+            this.value = value + ' ';
+        }
+    });
+
+    symptomsInput.addEventListener('keydown', function(e) {
+        if (e.key === ',' && !this.value.trim().endsWith(',')) {
+            const selectedOption = this.list.querySelector('option[value="' + this.value.trim() + '"]');
+            if (selectedOption) {
+                e.preventDefault();
+                this.value = this.value.trim() + ', ';
             }
         }
     });
-
-    symptomsInput.addEventListener('change', function() {
-        const symptom = this.value.trim();
-        if (symptom) {
-            enteredSymptoms.add(symptom);
-            this.value = '';
-            updateInputValue();
-        }
-    });
-
-    function updateInputValue() {
-        const currentInput = symptomsInput.value.endsWith(',') ? symptomsInput.value : '';
-        const symptoms = Array.from(enteredSymptoms).join(', ');
-        symptomsInput.value = symptoms + (currentInput ? ', ' : '');
-    }
 </script>
 
         <div class="modal-dialog">
