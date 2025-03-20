@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Assessment Results</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .result-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            border-radius: 15px;
+            color: white;
+        }
+        .recommendation-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="result-container">
+            <h2 class="text-center">Your Mental Health Assessment Results</h2>
+            <div class="mt-4">
+                <h4>Stress Level: {{ assessment.level }}</h4>
+                <p>Score: {{ assessment.score }}/9</p>
+                
+                <h4 class="mt-4">Recommendations:</h4>
+                <div class="recommendation-card">
+                    <ul>
+                    {% for rec in assessment.recommendations %}
+                        <li>{{ rec }}</li>
+                    {% endfor %}
+                    </ul>
+                </div>
+                
+                <a href="/" class="btn btn-light mt-4">Return Home</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

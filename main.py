@@ -114,6 +114,26 @@ def developer():
 def blog():
     return render_template("blog.html")
 
+@app.route('/mental_health')
+def mental_health():
+    return render_template("mental_health.html")
+
+@app.route('/mental_health_result', methods=['POST'])
+def mental_health_result():
+    score = sum(int(request.form[f'q{i}']) for i in range(1,4))
+    assessment = {
+        'score': score,
+        'level': 'Low' if score <= 3 else 'Moderate' if score <= 6 else 'High',
+        'recommendations': [
+            'Consider regular exercise',
+            'Practice mindfulness or meditation',
+            'Maintain a regular sleep schedule',
+            'Connect with friends and family',
+            'Consider speaking with a mental health professional'
+        ]
+    }
+    return render_template('mental_health_result.html', assessment=assessment)
+
 
 if __name__ == '__main__':
 
