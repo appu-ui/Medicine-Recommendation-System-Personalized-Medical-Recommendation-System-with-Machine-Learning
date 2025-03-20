@@ -2,7 +2,6 @@ from flask import Flask, request, render_template, jsonify  # Import jsonify
 import numpy as np
 import pandas as pd
 import pickle
-from newsapi.newsapi_client import NewsApiClient
 from datetime import datetime, timedelta
 
 
@@ -135,20 +134,6 @@ def mental_health_result():
         ]
     }
     return render_template('mental_health_result.html', assessment=assessment)
-
-@app.route('/news')
-def news():
-    newsapi = NewsApiClient(api_key='4b3c2c30aa1948eba5b013824c857d25')
-    yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
-    
-    articles = newsapi.get_everything(
-        q='medical OR healthcare OR medicine',
-        language='en',
-        from_param=yesterday,
-        sort_by='relevancy'
-    )
-    
-    return render_template('news.html', articles=articles['articles'][:10])
 
 if __name__ == '__main__':
 
