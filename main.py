@@ -2,7 +2,7 @@ from flask import Flask, request, render_template, jsonify  # Import jsonify
 import numpy as np
 import pandas as pd
 import pickle
-from newsapi import NewsApiClient
+from newsapi.newsapi_client import NewsApiClient
 from datetime import datetime, timedelta
 
 
